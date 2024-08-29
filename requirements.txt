@@ -1,0 +1,4 @@
+apscheduler
+schedule
+pyodbc
+datetime
