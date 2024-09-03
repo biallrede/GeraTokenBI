@@ -47,6 +47,7 @@ def get_powerbi_access_token(username, password):
 
     # Verifica se o comando foi bem-sucedido
     if result.returncode == 0:
+        print("saida powershell:",result.stdout)
         token = result.stdout.strip()
         parts = token.split("Bearer ")
         token = parts[1].strip()
@@ -83,14 +84,16 @@ def inserir_chave_banco(access_token_banco):
 username = "databi@allrede.com.br"
 password = "ab73rj45#@%"
 
-for i in range(5, 23):
-    time_str = f"{i:02d}:00"
-    job = partial(get_powerbi_access_token, username, password)
-    schedule.every().day.at(time_str).do(job)
+# for i in range(5, 23):
+#     time_str = f"{i:02d}:00"
+#     job = partial(get_powerbi_access_token, username, password)
+#     schedule.every().day.at(time_str).do(job)
 
-scheduler = BackgroundScheduler()
-scheduler.start()
+# scheduler = BackgroundScheduler()
+# scheduler.start()
 
-while True:
-    schedule.run_pending()
-    threading.Event().wait(1)
+# while True:
+#     schedule.run_pending()
+#     threading.Event().wait(1)
+
+get_powerbi_access_token(username,password)
