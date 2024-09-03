@@ -6,6 +6,32 @@ from credentials import credenciais_banco
 import time
 from functools import partial
 
+# Para rodar no windows 
+# def get_powerbi_access_token(username, password):
+#     # Cria o script PowerShell que fará login e pegará o token
+#     powershell_script = f"""
+#     $password = ConvertTo-SecureString "{password}" -AsPlainText -Force
+#     $credential = New-Object System.Management.Automation.PSCredential ("{username}", $password)
+#     Login-PowerBI -Credential $credential
+#     $token = Get-PowerBIAccessToken -AsString
+#     $token
+#     """
+
+#     # Executa o script PowerShell
+#     result = subprocess.run(["powershell", "-Command", powershell_script], capture_output=True, text=True)
+
+#     # Verifica se o comando foi bem-sucedido
+#     if result.returncode == 0:
+#         token = result.stdout.strip()
+#         parts = token.split("Bearer ")
+#         token = parts[1].strip()
+#         inserir_chave_banco(token)
+#         # return result.stdout.strip()
+#     else:
+#         print("Erro ao executar o PowerShell script:", result.stderr)
+#         # return None
+
+# Para rodar no linux 
 def get_powerbi_access_token(username, password):
     # Cria o script PowerShell que fará login e pegará o token
     powershell_script = f"""
@@ -16,8 +42,8 @@ def get_powerbi_access_token(username, password):
     $token
     """
 
-    # Executa o script PowerShell
-    result = subprocess.run(["powershell", "-Command", powershell_script], capture_output=True, text=True)
+    # Executa o script PowerShell usando 'pwsh'
+    result = subprocess.run(["pwsh", "-Command", powershell_script], capture_output=True, text=True)
 
     # Verifica se o comando foi bem-sucedido
     if result.returncode == 0:
@@ -25,11 +51,8 @@ def get_powerbi_access_token(username, password):
         parts = token.split("Bearer ")
         token = parts[1].strip()
         inserir_chave_banco(token)
-        # return result.stdout.strip()
     else:
         print("Erro ao executar o PowerShell script:", result.stderr)
-        # return None
-
 
 def inserir_chave_banco(access_token_banco):
     conn = credenciais_banco()
